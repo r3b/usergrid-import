@@ -19,6 +19,11 @@ var argv = require('optimist')
         default: 'UTF-8',
         describe: 'File encoding'
     })
+    .options('apiurl', {
+        alias: 'p',
+        default: 'https://api.usergrid.com',
+        describe: "Your API Backend URL"
+    })
     .options('authtype', {
         alias: 't',
         default: 'NONE',
@@ -72,9 +77,11 @@ var argv = require('optimist')
     })
     .argv;
 
-
+// console.log(argv);
+// process.exit();
 function getClient() {
     var options = {
+        URI:argv.apiurl,
         orgName: argv.o,
         appName: argv.a,
         authType: argv.authtype,
@@ -113,12 +120,12 @@ function save() {
                 method = "PUT";
                 endpoint += "/" + data.uuid
             }
-            client.request({method:method,endpoint:endpoint,data:data}, function(err, data) {
+            client.request({method:method,endpoint:endpoint,body:data}, function(err, data) {
                 count++;
                 if (err) {
                     console.error("Usergrid error: ", data);
                 }
-                console.log(JSON.stringify(data));
+                // console.log(JSON.stringify(data,null,2));
                 callback();
             });
         } catch (e) {
