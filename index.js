@@ -79,7 +79,7 @@ var argv = require('optimist')
 
 // console.log(argv);
 // process.exit();
-function getClient() {
+function getClient(callback) {
     var options = {
         URI:argv.apiurl,
         orgName: argv.o,
@@ -92,7 +92,7 @@ function getClient() {
         options.clientId = argv.clientId;
         options.clientSecret = argv.clientSecret;
     }
-    global._client = global._client || new ug.client(options);
+    global._client = global._client || new ug.client(options, callback);
     return global._client;
 }
 
@@ -162,6 +162,7 @@ function distribute() {
     });
 }
 if (cluster.isMaster) {
+var client=getClient(function(){console.log(this.token, this);});
     var stream = (argv.file) ? fs.createReadStream(argv.file) : process.stdin;
     var output = (argv.out) ? fs.createWriteStream(argv.out) : process.stdout;
     var count = errors = waiting = 0;
@@ -199,7 +200,6 @@ if (cluster.isMaster) {
             // console.log(cluster.worker.counter++);
             var endpoint = data.type;
             if (!endpoint) {
-                callback();
                 return;
             }
             var method = "POST";

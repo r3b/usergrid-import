@@ -9,9 +9,12 @@
   "author": "",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "request": "~2.33.0",
-    "optimist": "~0.6.0",
     "map-stream": "~0.1.0",
+    "optimist": "~0.6.0",
+    "redis": "^0.10.3",
+    "redis-timeseries": "^0.4.0",
+    "request": "~2.33.0",
+    "split": "^0.3.0",
     "usergrid": "~0.10.7"
   }
 }
